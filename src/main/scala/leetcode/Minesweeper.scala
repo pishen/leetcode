@@ -18,7 +18,14 @@ object Minesweeper {
           }
           
           def blankNearby() = {
-            Seq((i - 1, j), (i, j - 1), (i, j + 1), (i + 1, j)).exists { case (i2, j2) =>
+            val indices = for {
+              i2 <- i - 1 to i + 1
+              j2 <- j - 1 to j + 1
+              if !(i2 == i && j2 == j)
+            } yield {
+              (i2, j2)
+            }
+            indices.exists { case (i2, j2) =>
               board.lift(i2).flatMap(_.lift(j2)).filter(_ == 'B').isDefined
             }
           }
